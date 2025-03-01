@@ -15,7 +15,6 @@ import { FileType, KnowledgeBaseParams, KnowledgeItem } from '@types'
 import { app } from 'electron'
 import { v4 as uuidv4 } from 'uuid'
 
-import { proxyManager } from './ProxyManager'
 import { windowService } from './WindowService'
 
 class KnowledgeService {
@@ -49,14 +48,13 @@ class KnowledgeService {
               azureOpenAIApiVersion: apiVersion,
               azureOpenAIApiDeploymentName: model,
               azureOpenAIApiInstanceName: getInstanceName(baseURL),
-              configuration: { httpAgent: proxyManager.getProxyAgent() },
               dimensions,
               batchSize
             })
           : new OpenAiEmbeddings({
               model,
               apiKey,
-              configuration: { baseURL, httpAgent: proxyManager.getProxyAgent() },
+              configuration: { baseURL },
               dimensions,
               batchSize
             })
