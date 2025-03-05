@@ -77,6 +77,10 @@ export async function fetchChatCompletion({
       }
     }
 
+    const allMCPTools = await window.api.mcp.listTools()
+    if (allMCPTools.length > 0) {
+      console.log('Available MCP tools:', allMCPTools)
+    }
     await AI.completions({
       messages: filterUsefulMessages(messages),
       assistant,
@@ -104,7 +108,8 @@ export async function fetchChatCompletion({
         }
 
         onResponse({ ...message, status: 'pending' })
-      }
+      },
+      mcpTools: allMCPTools
     })
 
     message.status = 'success'
@@ -114,6 +119,12 @@ export async function fetchChatCompletion({
         assistant,
         messages: [..._messages, message]
       })
+      // Set metrics.completion_tokens
+      if (message.metrics && message?.usage?.completion_tokens) {
+        if (!message.metrics?.completion_tokens) {
+          message.metrics.completion_tokens = message.usage.completion_tokens
+        }
+      }
     }
   } catch (error: any) {
     message.status = 'error'
