@@ -7,11 +7,13 @@ import { isEmpty, uniqBy } from 'lodash'
 
 export interface AssistantsState {
   defaultAssistant: Assistant
+  translateAssistant: Assistant
   assistants: Assistant[]
 }
 
 const initialState: AssistantsState = {
   defaultAssistant: getDefaultAssistant(),
+  translateAssistant: getDefaultAssistant(),
   assistants: [getDefaultAssistant()]
 }
 
@@ -56,6 +58,9 @@ const assistantsSlice = createSlice({
           }
         }
       }
+    },
+    updateTranslateAssistant: (state, action: PayloadAction<{ assistant: Assistant }>) => {
+      state.translateAssistant = action.payload.assistant
     },
     addTopic: (state, action: PayloadAction<{ assistantId: string; topic: Topic }>) => {
       const topic = action.payload.topic
@@ -145,7 +150,8 @@ export const {
   updateTopics,
   removeAllTopics,
   setModel,
-  updateAssistantSettings
+  updateAssistantSettings,
+  updateTranslateAssistant
 } = assistantsSlice.actions
 
 export default assistantsSlice.reducer

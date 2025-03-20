@@ -1,8 +1,8 @@
-import { EditOutlined, MessageOutlined, RedoOutlined, SettingOutlined, TranslationOutlined } from '@ant-design/icons'
+import { EditOutlined, MessageOutlined, SettingOutlined, TranslationOutlined } from '@ant-design/icons'
 import { HStack } from '@renderer/components/Layout'
 import PromptPopup from '@renderer/components/Popups/PromptPopup'
 import { isEmbeddingModel } from '@renderer/config/models'
-import { TRANSLATE_PROMPT } from '@renderer/config/prompts'
+// import { TRANSLATE_PROMPT } from '@renderer/config/prompts'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { useDefaultModel } from '@renderer/hooks/useAssistant'
 import { useProviders } from '@renderer/hooks/useProvider'
@@ -11,7 +11,7 @@ import { getModelUniqId, hasModel } from '@renderer/services/ModelService'
 import { useAppDispatch } from '@renderer/store'
 import { setTranslateModelPrompt } from '@renderer/store/settings'
 import { Model } from '@renderer/types'
-import { Button, Select, Tooltip } from 'antd'
+import { Button, Select } from 'antd'
 import { find, sortBy } from 'lodash'
 import { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { SettingContainer, SettingDescription, SettingGroup, SettingTitle } from '..'
 import DefaultAssistantSettings from './DefaultAssistantSettings'
 import TopicNamingModalPopup from './TopicNamingModalPopup'
+import TranslateModelSettings from './TranslateModelSettings'
 
 const ModelSettings: FC = () => {
   const { defaultModel, topicNamingModel, translateModel, setDefaultModel, setTopicNamingModel, setTranslateModel } =
@@ -59,24 +60,24 @@ const ModelSettings: FC = () => {
     [translateModel]
   )
 
-  const onUpdateTranslateModel = async () => {
-    const prompt = await PromptPopup.show({
-      title: t('settings.models.translate_model_prompt_title'),
-      message: t('settings.models.translate_model_prompt_message'),
-      defaultValue: translateModelPrompt,
-      inputProps: {
-        rows: 10,
-        onPressEnter: () => {}
-      }
-    })
-    if (prompt) {
-      dispatch(setTranslateModelPrompt(prompt))
-    }
-  }
+  // const onUpdateTranslateModel = async () => {
+  //   const prompt = await PromptPopup.show({
+  //     title: t('settings.models.translate_model_prompt_title'),
+  //     message: t('settings.models.translate_model_prompt_message'),
+  //     defaultValue: translateModelPrompt,
+  //     inputProps: {
+  //       rows: 10,
+  //       onPressEnter: () => {}
+  //     }
+  //   })
+  //   if (prompt) {
+  //     dispatch((prompt))
+  //   }
+  // }
 
-  const onResetTranslatePrompt = () => {
-    dispatch(setTranslateModelPrompt(TRANSLATE_PROMPT))
-  }
+  // const onResetTranslatePrompt = () => {
+  //   dispatch(setTranslateModelPrompt(TRANSLATE_PROMPT))
+  // }
 
   return (
     <SettingContainer theme={theme}>
@@ -139,12 +140,12 @@ const ModelSettings: FC = () => {
             showSearch
             placeholder={t('settings.models.empty')}
           />
-          <Button icon={<SettingOutlined />} style={{ marginLeft: 8 }} onClick={onUpdateTranslateModel} />
-          {translateModelPrompt !== TRANSLATE_PROMPT && (
+          <Button icon={<SettingOutlined />} style={{ marginLeft: 8 }} onClick={TranslateModelSettings.show} />
+          {/* {translateModelPrompt !== TRANSLATE_PROMPT && (
             <Tooltip title={t('common.reset')}>
               <Button icon={<RedoOutlined />} style={{ marginLeft: 8 }} onClick={onResetTranslatePrompt}></Button>
             </Tooltip>
-          )}
+          )} */}
         </HStack>
         <SettingDescription>{t('settings.models.translate_model_description')}</SettingDescription>
       </SettingGroup>

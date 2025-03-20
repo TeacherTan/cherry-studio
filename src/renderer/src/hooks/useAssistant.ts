@@ -13,7 +13,8 @@ import {
   updateAssistantSettings,
   updateDefaultAssistant,
   updateTopic,
-  updateTopics
+  updateTopics,
+  updateTranslateAssistant
 } from '@renderer/store/assistants'
 import { setDefaultModel, setTopicNamingModel, setTranslateModel } from '@renderer/store/llm'
 import { Assistant, AssistantSettings, Model, Topic } from '@renderer/types'
@@ -87,6 +88,20 @@ export function useDefaultAssistant() {
       topics: [getDefaultTopic(defaultAssistant.id)]
     },
     updateDefaultAssistant: (assistant: Assistant) => dispatch(updateDefaultAssistant({ assistant }))
+  }
+}
+
+export function useTranslateAssistant() {
+  const translateAssistant = useAppSelector((state) => {
+    const assistant = state.assistants.translateAssistant
+    console.log('translateAssistant:', assistant) // 调试输出
+    return assistant
+  })
+  const dispatch = useAppDispatch()
+
+  return {
+    translateAssistant,
+    updateTranslateAssistant: (assistant: Assistant) => dispatch(updateTranslateAssistant({ assistant }))
   }
 }
 
